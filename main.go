@@ -27,10 +27,13 @@ func main() {
 }
 
 func helloWorld(uri, username, password string) (string, error) {
+	// Neo4j 4.0, defaults to no TLS therefore use bolt:// or neo4j://
 	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
 	if err != nil {
 		return "", err
 	}
+	// Handle driver lifetime based on your application lifetime requirements  driver's lifetime is usually
+	// bound by the application lifetime, which usually implies one driver instance per application
 	defer driver.Close()
 
 	// Sessions are short-lived, cheap to create and NOT thread safe.
